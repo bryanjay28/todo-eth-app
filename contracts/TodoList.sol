@@ -17,7 +17,10 @@ contract TodoList {
         bool completed
     );
 
-    event TaskToggle();
+    event TaskCompleted(
+        uint id,
+        bool completed
+    );
 
     constructor() public {
         createTask("Check out my boy Banks");
@@ -26,10 +29,15 @@ contract TodoList {
     function createTask(string memory _content) public {
         taskCount++;
         tasks[taskCount] = Task(taskCount, _content, false);
+        
         emit TaskCreated(taskCount, _content, false);
     }
 
- //   function toggleCompletion(uint memory _id) public {
-        //taskCount[_id];
- //   }
+    function toggleCompleted(uint _id) public {
+        Task memory _task = tasks[_id];
+        _task.completed = !_task.completed;
+        tasks[_id] = _task;
+        
+        emit TaskCompleted(_id, _task.completed);
+    }
 }
